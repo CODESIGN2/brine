@@ -12,6 +12,11 @@ When(/^the request header `([^`]*)` is assigned `([^`]*)`$/) do |header, value|
   add_header(header, value)
 end
 
+When(/^the request credentials are set for basic auth user `([^`]*)` and password `([^`]*)`$/) do |user, password|
+  user_password_str = "#{user}:#{password}"
+  add_header('Authorization', "Basic #{Base64.strict_encode64(user_password_str)}")
+end
+
 When(/^an? (GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS) is sent to `([^`]*)`$/) do |method, url|
   send_request(parse_method(method), URI.escape(url))
   bind('response', response)
